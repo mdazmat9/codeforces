@@ -1,0 +1,161 @@
+ 
+import java.io.*;
+import java.math.*;
+import java.util.*;
+@SuppressWarnings("Duplicates")
+// author @mdazmat9
+public class Main{
+    static Scanner sc = new Scanner(System.in);
+    static PrintWriter out = new PrintWriter(System.out);
+    public static void main(String[] args) throws IOException {
+        int test = 1;
+         test=sc.nextInt();
+ 
+        ArrayList<Long> a=new ArrayList<>();
+        ArrayList<Long> b=new ArrayList<>();
+ 
+        a.add(1l);
+        long num=3;
+        for(int i=2;i<=19;i++){
+            a.add(num);
+            num=num*3;
+        }
+ 
+ 
+       long last=1<<19;
+        for(int mask=1;mask<last;mask++){
+            long sum=0;
+            for(int i=a.size()-1;i>=0;i--){
+                long p=(mask>>i)&1;
+                if(p==1)sum+=a.get(i);
+            }
+            list1.add(sum);
+            seta.add(sum);
+        }
+        //out.println(seta);
+         last=1l<<19;
+ 
+        for(int i=1;i<=19;i++){
+            b.add(num);
+            num=num*3;
+        }
+        for(int mask=1;mask<last;mask++){
+            long sum=0;
+            for(int i=b.size()-1;i>=0;i--){
+                long p=(mask>>i)&1;
+                if(p==1)sum+=b.get(i);
+            }
+            if(sum>=0) {
+                list2.add(sum);
+                setb.add(sum);
+            }
+        }
+        Collections.sort(list1);
+        Collections.sort(list2);
+ 
+        for (int ind = 0; ind < test; ind++) {
+            solve();
+        }
+        out.flush();
+    }
+static     TreeSet<Long> seta=new TreeSet<>();
+static     TreeSet<Long> setb=new TreeSet<>();
+static     ArrayList<Long> list1=new ArrayList<>();
+static     ArrayList<Long> list2=new ArrayList<>();
+    static void solve(){
+        long n=sc.nextLong();
+        long check=list1.get(list1.size()-1);
+  
+        if(n<=check){
+            long ans=seta.ceiling(n);
+            out.println(ans);
+            return;
+        }
+        if(setb.contains(n)){
+            out.println(n);
+            return;
+        }
+        long lower=setb.floor(n);
+        long upper=Long.MAX_VALUE;
+        if(setb.higher(n)!=null){
+            upper=setb.higher(n);
+        }
+        int low=0,high=list1.size()-1;
+        while (low<=high){
+            int mid=(low+high)/2;
+            if(lower+list1.get(mid)>=n){
+                upper=Math.min(upper,lower+list1.get(mid));
+                high=mid-1;
+            }else {
+                low=mid+1;
+            }
+        }
+        long val=9223372036854775807l;
+        if(upper==val){
+            out.println(1350851717672992090l-1);
+        }
+        else
+            out.println(upper);
+ 
+ 
+    }
+ 
+ 
+ 
+ 
+    static int[] intarray(int n){ int [] a=new int[n];for(int i=0;i<n;i++)a[i]=sc.nextInt();return a; }
+    static void sort(int[]a){ shuffle(a);Arrays.sort(a);}
+    static void sort(long[]a){ shuffle(a);Arrays.sort(a);}
+    static long[] longarray(int n){ long [] a=new long[n];for(int i=0;i<n;i++)a[i]=sc.nextLong();return a; }
+    static ArrayList<Integer> intlist(int n){ArrayList<Integer> list=new ArrayList<>();for(int i=0;i<n;i++)list.add(sc.nextInt());return list; }
+    static ArrayList<Long> longlist(int n){ArrayList<Long> list=new ArrayList<>();for(int i=0;i<n;i++)list.add(sc.nextLong());return list; }
+    static int[][] int2darray(int n,int m){ int [][] a=new int[n][m];for(int i=0;i<n;i++){ for(int j=0;j<m;j++){ a[i][j]=sc.nextInt(); } }return a; }
+    static long[][] long2darray(int n,int m){ long [][] a=new long[n][m];for(int i=0;i<n;i++){ for(int j=0;j<m;j++){ a[i][j]=sc.nextLong(); } }return a; }
+    static char[][] char2darray(int n,int m){ char [][] a=new char[n][m];for(int i=0;i<n;i++){ String s=sc.next(); a[i]=s.toCharArray(); }return a; }
+ 
+    static double pi=3.14159265358979323846264;
+    public static double logb( double a, double b ) {return Math.log(a) / Math.log(b); }
+    static long fast_pow(long a, long b,long abs) {
+        if(b == 0) return 1L;
+        long val = fast_pow(a, b / 2,abs);
+        if(b % 2 == 0) return val * val % abs;
+        else return val * val % abs * a % abs;
+    }
+    static long abs = (long)1e9 + 7;
+    static   void shuffle(int[] a) { int n = a.length;for(int i = 0; i < n; i++) { int r = i + (int) (Math.random() * (n - i));int tmp = a[i];a[i] = a[r];a[r] = tmp; } }
+    static   void shuffle(long[] a) { int n = a.length;for(int i = 0; i < n; i++) { int r = i + (int) (Math.random() * (n - i));long tmp = a[i];a[i] = a[r];a[r] = tmp; } }
+    static long gcd(long a , long b) {
+        if(b == 0) return a;
+        return gcd(b , a % b);
+    }
+}
+ 
+class Scanner {
+    public BufferedReader reader;
+    public StringTokenizer st;
+    public Scanner(InputStream stream) {
+        reader = new BufferedReader(new InputStreamReader(stream));
+        st = null;
+    }
+    public String next() {
+        while (st == null || !st.hasMoreTokens()) {
+            try {
+                String line = reader.readLine();
+                if (line == null) return null;
+                st = new StringTokenizer(line);
+            } catch (Exception e) {
+                throw (new RuntimeException());
+            }
+        }
+        return st.nextToken();
+    }
+    public int nextInt() {
+        return Integer.parseInt(next());
+    }
+    public long nextLong() {
+        return Long.parseLong(next());
+    }
+    public double nextDouble() {
+        return Double.parseDouble(next());
+    }
+}
